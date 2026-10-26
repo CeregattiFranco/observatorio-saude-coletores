@@ -59,7 +59,7 @@ def log(msg):
 
 def psql(sql, tabular=False):
     r = subprocess.run(PSQL + ['-v', 'ON_ERROR_STOP=1', '-q', '-At', '-F', '\t'],
-                       input=sql, capture_output=True, text=True)
+                       input=sql, capture_output=True, text=True, timeout=120)
     if r.returncode:
         raise SystemExit(f'psql: {r.stderr.strip()[:300]}')
     return [l.split('\t') for l in r.stdout.strip().split('\n') if l] if tabular else r.stdout
